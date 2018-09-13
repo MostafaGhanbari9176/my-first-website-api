@@ -2,28 +2,28 @@
 /**
  * Created by PhpStorm.
  * User: Mostafa
- * Date: 07/09/2018
- * Time: 11:42 PM
+ * Date: 08/09/2018
+ * Time: 02:36 PM
  */
 
-require_once 'model/DownloadObject.php';
-require_once 'DataModel/StDownloadObject.php';
+require_once 'model/VisitObject.php';
 
-class PresentDownloadObject
+class PresentVisitObject
 {
-    public static function getObjectByPageId($pageId){
 
-        $result = (new DownloadObject())->getObjectByPageId($pageId);
+    public static function getObjectByPageId($pageId)
+    {
+
+        $result = (new VisitObject())->getObjectByPageId($pageId);
         $resultData = array();
         while ($row = $result->fetch_assoc()) {
             $row['empty'] = 0;
             $resultData[] = $row;
         }
-        if(!$resultData)
-        {
+        if (!$resultData) {
             $message = array();
             $message['empty'] = 1;
-            $resultData[] = $message;
+            $resultData [] = $message;
         }
 
         return json_encode($resultData);
@@ -31,7 +31,7 @@ class PresentDownloadObject
 
     public static function getObjectByGroupingId($groupId){
 
-        $result = (new DownloadObject())->getObjectByGroupingId($groupId);
+        $result = (new VisitObject())->getObjectByGroupingId($groupId);
         $resultData = array();
         while ($row = $result->fetch_assoc()) {
             $row['empty'] = 0;
@@ -56,7 +56,7 @@ class PresentDownloadObject
         }
         if(strlen($sql) > 0) {
             $sql = rtrim($sql, "OR");
-            $result = (new DownloadObject())->getObjectByGroupingIString($sql);
+            $result = (new VisitObject())->getObjectByGroupingIString($sql);
             while ($row = $result->fetch_assoc()) {
                 $row['empty'] = 0;
                 $resultData[] = $row;
