@@ -13,6 +13,8 @@ require '../vendor/autoload.php';
 require 'presenter/PresentDownloadObject.php';
 require 'presenter/PresentVisitObject.php';
 require 'presenter/PresentGrouping.php';
+require 'presenter/PresentComment.php';
+require 'jdf.php';
 
 header("Access-Control-Allow-Origin: *");
 header("Pragma: no-cache");
@@ -64,6 +66,23 @@ $app->get('/getVisitObjectByGroupingId/{gId}', function (Request $req, Response 
 
 $app->get('/getVisitObjectByRootIdGrouping/{gId}', function (Request $req, Response $res, array $arq) {
     $result = PresentVisitObject::getObjectByGroupingRootId($arq['gId']);
+    clearstatcache();
+    $res->getBody()->write($result);
+    return $res;
+});
+
+$app->post('/saveComment',function (Request $req, Response $res){
+    $postBody = $req->getParsedBody();
+    $o_id = filter_var($postBody['o_id'],FILTER_SANITIZE_STRING);
+    $que_text = filter_var($postBody['que_text'], FILTER_SANITIZE_STRING);
+    $user_name = filter_var($postBody['user_name'],FILTER_SANITIZE_STRING);
+    $user_mail = filter_var($postBody['user_mail'],FILTER_SANITIZE_STRING);
+    PresentComment::saveComment($o_id, $que_text, $user_name, $user_mail);
+
+});
+
+$app->get('/getCommentByObjectId/{oId}', function (Request $req, Response $res, array $arq) {
+    $result = PresentComment::getByObjectId($arq['oId']);
     clearstatcache();
     $res->getBody()->write($result);
     return $res;
